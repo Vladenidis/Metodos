@@ -1,9 +1,12 @@
-function solve_system(A::Matrix{Float64}, b::Vector{Float64})
-    n = length(b)
+function solve_system(matrix_A::Matrix{Float64}, vector_b::Vector{Float64})
+    
+    n_digits = 8
 
-    dimension_failure(A, n) && return
+    n = length(vector_b)
 
-    A = [A b]
+    dimension_failure(matrix_A, n) && return
+
+    A = [matrix_A vector_b]
 
     for i=1:n-1 #Step 1
         # Step 2 Tome p o menor inteiro em [i, n] tal que a_pi != 0
@@ -12,7 +15,7 @@ function solve_system(A::Matrix{Float64}, b::Vector{Float64})
         msg_erro = false
 
         for k=i:n
-            if A[k, i] != 0
+            if round(A[k, i], digits= n_digits) != 0
                 p = k
                 break
             end
@@ -44,15 +47,33 @@ function solve_system(A::Matrix{Float64}, b::Vector{Float64})
             A[j, :] = A[j, :] - m*A[i, :]
         end
     end
-# Step 7
-if A[n, n] == 0
+    # Step 7
+    if A[n, n] == 0
     println("Sistema não admite única solução")
     return
-end
+    end
 
-# Step 8
-x = Vector{Float64}(undef, n)
-x[n] = A[n, n+1] / A[n, n]
+    # Step 8
+    x = Vector{Float64}(undef, n)
+    x[n] = A[n, n+1] / A[n, n]
+
+
+    # Step 9 (substituição reversa)
+    for i = n - 1 :-1:1
+
+        soma = 0
+
+        for j = i+1:n
+
+            soma += A[i, j]*x[j]
+        end 
+
+        x[i] = (A[i, n + 1] - soma ) / A[i, i]
+    end
+
+    return x
+
+end
 
 
 function dimension_failure(A::Matrix{Float64}, number_of_variables::Int64)

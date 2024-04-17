@@ -1,18 +1,30 @@
 @testset "Test Round Arithmetics" begin
 
-    #Exercise 1
+    #Exercise 1_6
     atol = 1e-8
 
     value = (13/14 - 6/7) / (2*exp(1) - 5.4)
 
     trunc_operation = trunc(
-        trunc_sum(13 / 14, -6 / 7, digits = 4) / trunc_sum(trunc_mul(2.0, exp(1), digits = 4), -5.4, digits = 4),
+        trunc_sum(
+            trunc(13 / 14, digits = 4), 
+            trunc(-6 / 7, digits = 4), 
+            digits = 4
+        ) / 
+        trunc_sum(
+            trunc_mul(
+                2.0, 
+                trunc(exp(1), digits = 4),
+                digits = 4
+                ), 
+            -5.4, 
+            digits = 4),
         digits = 4,
     )
 
-    @test trunc_operation == 1.9615
-    @test absolute_error(value, trunc_operation) ≈ 0.007959860713978362 atol = atol
-    @test relative_error(value, trunc_operation) ≈ 0.0040745826276636045 atol = atol
+    @test trunc_operation == 1.9669
+    @test absolute_error(value, trunc_operation) ≈ 0.013359860713978433 atol = atol
+    @test relative_error(value, trunc_operation) ≈ 0.006838795090671228 atol = atol
     
 
     round_operation = round(

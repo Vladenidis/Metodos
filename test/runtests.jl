@@ -1,7 +1,8 @@
 using Test
-
+using LinearAlgebra: norm
 DIGITS = 10
 
+include("src/LinearAlgebra/test_GaussianElimination.jl")
 include("../src/Includes.jl")
 include("src/ErrorAnalysis/test_RoundOffErrors.jl")
 include("src/ErrorAnalysis/test_RoundArithmetics.jl")

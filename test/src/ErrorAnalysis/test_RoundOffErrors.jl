@@ -1,3 +1,11 @@
+# escopo de teste
+#@testset "Teste do Edson" begin
+# @test 4.0 == 2 + 2
+# @test 3.0 == 1.0 + 1.0
+# end
+#atol se refere a tolerância absoluta
+# rtol se refere a tolerância relativa
+
 @testset "Test absolute_error" begin
 
     atol = 1e-16
